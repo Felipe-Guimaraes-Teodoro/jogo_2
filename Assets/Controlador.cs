@@ -4,15 +4,28 @@ using UnityEngine;
 
 public class Controlador : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+  public GameObject camera;
+  public float sensitivity = 1.0f;
+  public float speed = 1.0f;
+    
+  void Start()
+  {
+    Cursor.lockState = CursorLockMode.Locked;
+  }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+  void Update()
+  {
+    float dt = Time.deltaTime;
+    camera.transform.position += 
+      camera.transform.forward * Input.GetAxis("Vertical") * speed * dt;
+
+    camera.transform.position += 
+      camera.transform.right * Input.GetAxis("Horizontal") * speed * dt;       
+
+    float mouseX = Input.GetAxis("Mouse X");
+    float mouseY = Input.GetAxis("Mouse Y");
+    camera.transform.eulerAngles += 
+      new Vector3(-mouseY * sensitivity, mouseX * sensitivity, 0);
+
+  }
 }
