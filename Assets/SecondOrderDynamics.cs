@@ -13,7 +13,6 @@ public class SecondOrderDynamics : MonoBehaviour
 
   public float f, z, r;
   public Vector3 x0;
-  public float v;
 
   public GameObject bola;
   public GameObject goal;
@@ -33,21 +32,17 @@ public class SecondOrderDynamics : MonoBehaviour
   }
 
   // Update is called once per frame
-  void Update()
+  void LateUpdate()
   {
-    // Assuming you have a valid reference to the `bola` object
-    if (v <= 0.0f)
-    {
-      v = 1.0f;
+    if (transform.parent != null) {
+      RecalculateConstants();
+      Vector3 x = goal.transform.position;
+      Vector3 xd = CalculateVelocity(x);
+
+      Vector3 coiso = UpdateSystem(x, xd);
+      bola.transform.position = coiso;
+      bola.transform.rotation = goal.transform.rotation;
     }
-
-    RecalculateConstants();
-    Vector3 x = goal.transform.position;
-    Vector3 xd = CalculateVelocity(x);
-
-    Vector3 coiso = UpdateSystem(x, xd);
-    bola.transform.position = coiso;
-    bola.transform.rotation = goal.transform.rotation;
   }
 
   Vector3 CalculateVelocity(Vector3 x)
